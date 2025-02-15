@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* .button is a standard made class that applies itself to every button*/
+    .button {
+      background-color: #4CAF50;
+      border: 2px solid black;
+      color: black;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 4px 20px;
+      border-radius: 5px;
+      width: 400px;
+      height: 45px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      transform: scale(1, 1);
+      transition: ease-in-out 0.5s;
+    }
+
+    .button:active{
+      padding: 10px 27px 10px 27px;
+      transform: scale(0.99, 0.99);
+    }
+
+    .button:hover {
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+      transition: box-shadow 0.2s ease-in-out, margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    }
+
+    /* change these attributes to change the first 3 button's style*/
+    .button1 {
+      background-color: goldenrod;
+      margin: 20px 20px;
+      font-size: 24px;
+    }
+
+    .button2 {
+      background-color: #6d6d6d;
+    }
+
+    .btn-group .button4 {
+      color: white;
+      background: linear-gradient(to top, grey, black);
+      float: right;
+      margin: 0px 0px;
+      width: 200px;
+      height: 45px;
+    }
+
+    .button5 {
+      position: absolute;
+      margin-top: -200px;
+      margin-left: 1500px;
+      color: transparent;
+      background-color: transparent;
+      border: field;
+    }
+
+    .btn-group2 .button6 {
+      float: right;
+      clear: right;
+      width: 200px;
+      height: 45px;
+      margin: 0px 0px;
+    }
+
+    .btn-group2 .button6:not(:last-child) {
+      border-bottom: none; /* Prevent double borders */
+    }
+
+  </style>
+</head>
+<!-- the body can be given an id to be called for in the javascript, it can also apply style to the entire page-->
+<body id="body" style="font-family: Bahnschrift; color: black; background-color: white">
+
+<div class="btn-group">
+  <button class="button button4" onclick="resetFunction(); playClick()" type="button" id="myButton8">reset game</button>
+  <button class="button button4" onclick="darkFunction(); playClick()" type="button" id="myButton4">mine at day/night</button>
+  <button class="button button4" onclick="muteFunction(); playClick()" type="button" id="myButton21">mute sound</button>
+</div>
+
+<h2 id="h2">Mine Idler</h2>
+
+<p style="position: absolute">click buttons to gain gold and pickaxes</p>
+<br>
+<p style=" float: right; margin-right: 46px;">travel to area</p>
+<br>
+<div class="btn-group2">
+  <button class="button button6" onclick="areaOne(); playClick()" type="button" id="myButton19">get location</button>
+  <button class="button button6" onclick="areaTwo(); playClick()" type="button" id="myButton20">get location</button>
+  <button class="button button6" onclick="areaThree(); playClick()" type="button" id="myButton11">get location</button>
+  <button class="button button6" onclick="areaFour(); playClick()" type="button" id="myButton12">get location</button>
+  <button class="button button6" onclick="areaFive(); playClick()" type="button" id="myButton13">get location</button>
+  <button class="button button6" onclick="areaSix(); playClick()" type="button" id="myButton14">get location</button>
+  <button class="button button6" onclick="areaSeven(); playClick()" type="button" id="myButton15">get location</button>
+  <button class="button button6" onclick="areaEight(); playClick()" type="button" id="myButton16">get location</button>
+  <button class="button button6" onclick="areaNine(); playClick()" type="button" id="myButton17">get location</button>
+  <button class="button button6" onclick="areaTen(); playClick()" type="button" id="myButton18">get location</button>
+</div>
+<!--demo and demo1 are goldamount and gold per click respectively, need to be renamed-->
+<p id="knobs" style="position: absolute; margin-left: 400px;"></p>
+<p id="goldamount">0</p>
+
+<p id="goldPerClick"></p>
+<p id="goldPerSecond"></p>
+
+<!-- button1 is gold mining button,
+button2 is the first upgrade,
+button 3 is the second upgrade,
+button5 is the first prestige layer button -->
+<button class="button button1" onclick="onGoldClick(); playClick()" type="button" id="myButton1">mine for gold</button>
+
+<button class="button button2" onclick="onPickaxeClick(); playClick()" type="button" id="myButton2"></button>
+
+<button class="button button2" onclick="onPickaxeMultiplier(); playClick()" type="button" id="myButton3"></button>
+
+<button class="button button2" onclick="autoMiner(); playClick()" type="button" id="myButton9"></button>
+
+<button class="button button2" onclick="autoMinerMultiplier(); playClick()" type="button" id="myButton10"></button>
+
+<button class="button button5" onclick="prestigeFunction(); playClick()" type="button" id="myButton5"></button>
+
+
+<!--
+<button class="button button6" onclick="saveFunction(); playClick()" type="button" id="myButton6">save</button>
+<button class="button button7" onclick="loadFunction(); playClick()" type="button" id="myButton7">load</button> -->
+
+
+<!-- src calls the entire app.js file and runs the script -->
+<script src="js/app.js"></script>
+
+</body>
+</html>
