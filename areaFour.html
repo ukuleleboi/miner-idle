@@ -41,7 +41,7 @@
 
     /* change these attributes to change the first 3 button's style*/
     .button1 {
-      background: linear-gradient(to top, yellow, goldenrod);
+      background-color: #B9F2FF;
       margin: 20px 20px;
       font-size: 24px;
     }
@@ -60,17 +60,12 @@
     }
 
     .button5 {
+      position: absolute;
+      margin-top: -200px;
+      margin-left: 1500px;
       color: transparent;
       background-color: transparent;
-      margin: 20px 20px;
-      font-size: 24px;
-      border: transparent;
-    }
-
-    .button7 {
-      color: transparent;
-      background-color: transparent;
-      border: transparent;
+      border: field;
     }
 
     .btn-group2 .button6 {
@@ -93,20 +88,6 @@
       height: calc(var(--h) + 40px);
       border-radius: 20px;
       border: solid 15px #232323;
-      background-color: rgba(136, 136, 136, 0.4);
-    }
-
-    .btn-group4 {
-      --w: 400px;
-      --h: 261px;
-      position: absolute;
-      margin-left: 480px;
-      width: calc(var(--w) + 40px);
-      height: calc(var(--h) + 40px);
-      border-radius: 20px;
-      border: transparent;
-      background-color: transparent;
-
     }
 
   </style>
@@ -127,16 +108,16 @@
 <p style=" float: right; margin-right: 46px;">travel to area</p>
 <br>
 <div class="btn-group2">
-  <button class="button button6" onclick="playClick()" type="button" id="myButton11">gold mine</button>
-  <button class="button button6" onclick="playClick()" type="button" id="myButton12">ruby mine</button>
-  <button class="button button6" onclick="playClick()" type="button" id="myButton13">amethyst mine</button>
-  <button class="button button6" onclick="playClick()" type="button" id="myButton14">diamond mine</button>
-  <button class="button button6" onclick="playClick()" type="button" id="myButton15">red matter mine</button>
-  <button class="button button6" onclick="playClick()" type="button" id="myButton16">dark matter mine</button>
-  <button class="button button6" onclick="playClick()" type="button" id="myButton17">dimensional mine</button>
-  <button class="button button6" onclick="playClick()" type="button" id="myButton18">divine mine</button>
-  <button class="button button6" onclick="playClick()" type="button" id="myButton19">? mine</button>
-  <button class="button button6" onclick="playClick()" type="button" id="myButton20">mine mine</button>
+  <button class="button button6" onclick="playClick()" type="button" id="myButton11">get location</button>
+  <button class="button button6" onclick="playClick()" type="button" id="myButton12">get location</button>
+  <button class="button button6" onclick="playClick()" type="button" id="myButton13">get location</button>
+  <button class="button button6" onclick="playClick()" type="button" id="myButton14">get location</button>
+  <button class="button button6" onclick="playClick()" type="button" id="myButton15">get location</button>
+  <button class="button button6" onclick="playClick()" type="button" id="myButton16">get location</button>
+  <button class="button button6" onclick="playClick()" type="button" id="myButton17">get location</button>
+  <button class="button button6" onclick="playClick()" type="button" id="myButton18">get location</button>
+  <button class="button button6" onclick="playClick()" type="button" id="myButton19">get location</button>
+  <button class="button button6" onclick="playClick()" type="button" id="myButton20">get location</button>
 </div>
 <!--demo and demo1 are goldamount and gold per click respectively, need to be renamed-->
 <p id="knobs" style="position: absolute; margin-left: 400px;"></p>
@@ -153,13 +134,7 @@
   <button class="button button2" onclick="autoMinerMultiplier(); playClick()" type="button" id="myButton10"></button>
 </div>
 
-<div class="btn-group4" id="btn-group4">
-  <button class="button button5" onclick="prestigeFunction(); playClick()" type="button" id="myButton5"></button>
-  <button class="button button7" onclick="knobPickaxeFunction(); playClick()" type="button" id="myButton22"></button>
-  <button class="button button7" onclick="somethingfunnction(); playClick()" type="button" id="myButton23"></button>
-  <button class="button button7" onclick="somethingfunnction(); playClick()" type="button" id="myButton24"></button>
-  <button class="button button7" onclick="somethingfunnction(); playClick()" type="button" id="myButton25"></button>
-</div>
+<button class="button button5" onclick="prestigeFunction(); playClick()" type="button" id="myButton5"></button>
 
 
 <!--
