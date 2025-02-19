@@ -48,7 +48,7 @@ Game.initialize = function () {
   Game.elements.pickaxeKnob = document.getElementById("myButton22");
   Game.elements.knobsonReset.disabled = true;
 
-  document.getElementById("myButton11").disabled = true;
+  //document.getElementById("myButton11").disabled = true;
   loadFunction();
 };
 
@@ -292,7 +292,7 @@ function muteFunction() {
 
 
 document.getElementById("myButton11").onclick = function areaOne() {
-  location.href = "areaOne.html";
+  location.href = "index.html";
 }
 
 document.getElementById("myButton12").onclick = function areaTwo() {
