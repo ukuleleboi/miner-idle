@@ -1,6 +1,6 @@
 const Game = {
   values: {
-    goldAmount: 999999,
+    goldAmount: 999999999,
     pickaxe: 1,
     pickaxeMultiplier: 1,
     autoMinerMultiplier: 1,
@@ -13,9 +13,24 @@ const Game = {
     autoMinersCost: 1000,
     autoMinerMultiplierCost: 10000,
     idleGold: 0,
-  },
-  knobValues: {
     knobPickaxe: 1,
+    saveInfo: false,
+    clickerTrophy: false,
+    clickerLevel: 2,
+    clickXp: 0,
+    clickMult: 1,
+    idleerTrophy: false,
+    idleerLevel: 2,
+    idleXp: 0,
+    idleMult: 1,
+    knoberTrophy: false,
+    knoberLevel: 2,
+    knobXp: 0,
+    knobMult: 1,
+    trophyToken1: true,
+    trophyToken2: true,
+    trophyToken3: true,
+    trophyToken: 0,
   },
 
 
@@ -30,6 +45,8 @@ const Game = {
     miners: null,
     minerMultiplier: null,
     pickaxeKnob: null,
+
+
   },
 
   __fps: 10,
@@ -47,15 +64,73 @@ Game.initialize = function () {
   Game.elements.minerMultiplier = document.getElementById("myButton10");
   Game.elements.pickaxeKnob = document.getElementById("myButton22");
   Game.elements.knobsonReset.disabled = true;
-
   //document.getElementById("myButton11").disabled = true;
   loadFunction();
 };
 
 Game.draw = function () {
+  if (Game.values.knobMultiplier >= 1.5 && Game.values.trophyToken1 === true) {
+    Game.values.trophyToken += 1;
+    Game.values.trophyToken1 = false;
+  }
+  if (Game.values.knobMultiplier >= 2.0 && Game.values.trophyToken2 === true) {
+    Game.values.trophyToken += 1;
+    Game.values.trophyToken2 = false;
+  }
+  if (Game.values.knobMultiplier >= 2.5 && Game.values.trophyToken3 === true) {
+    Game.values.trophyToken += 1;
+    Game.values.trophyToken3 = false;
+  }
+
+  if (Game.values.trophyToken > 0) {
+    document.getElementById('myButton29').style.display = "block";
+    document.getElementById('myButton29').onclick = function () {
+      document.getElementById('trophy-choice-background').style.display = 'block';
+    }
+
+    document.getElementById('trophy-choice-background').onclick = function () {
+      document.getElementById('trophy-choice-background').style.display = 'none';
+
+    }
+    //document.querySelectorAll(".progress").forEach(el => el.style.display = "flex");
+    //document.querySelectorAll(".btn-group5").forEach(el => el.style.display = "flex");
+  } else {
+    document.getElementById('myButton29').style.display = "none";
+  }
+
+  if (Game.values.idleerTrophy === true) {
+    Game.values.idleXp += 0.1;
+    root = document.documentElement;
+
+    function RSExp() {
+      this.equate = function (xp) {
+        return Math.floor(xp + 300 * Math.pow(2, xp / 7));
+      };
+      this.level_to_xp = function (level) {
+        var xp = 0;
+        for (var i = 1; i < level; i++)
+          xp += this.equate(i);
+        return Math.floor(xp / 4);
+      };
+      this.xp_to_level = function (xp) {
+        var level = 1;
+        while (this.level_to_xp(level) < xp)
+          level++;
+        return level;
+      };
+    }
+
+    var rs = new RSExp();
+    root.style.setProperty('--my-end-width2', ((500 / (rs.level_to_xp(Game.values.idleerLevel) - (rs.level_to_xp(Game.values.idleerLevel - 1)))) * Game.values.idleXp + 'px'));
+    if (Game.values.idleXp >= rs.level_to_xp(Game.values.idleerLevel) - (rs.level_to_xp(Game.values.idleerLevel - 1))) {
+      Game.values.idleXp = 0;
+      Game.values.idleerLevel += 1;
+    }
+  }
+
   Game.elements.gold.innerText = Math.floor(Game.values.goldAmount)/*.toExponential(2)*/ + " gold";  //writes the goldamount upon loading the site(files)
   Game.elements.knobs.innerText = Game.values.knobs + " knobs";
-  Game.elements.click.innerText = (Game.values.pickaxe * Game.knobValues.knobPickaxe) * Game.values.pickaxeMultiplier + " " + "gold per click";  //writes the gold the player gains per click whenever it changes
+  Game.elements.click.innerText = Math.round((Game.values.pickaxe * Game.values.knobPickaxe) * Game.values.pickaxeMultiplier * Game.values.knobMultiplier * Math.pow(1.1, (Game.values.clickerLevel - 1 - Game.values.clickMult))) + " " + "gold per click";  //writes the gold the player gains per click whenever it changes
   Game.elements.gps.innerText = Math.round((Game.values.idleGold + Number.EPSILON) * 100) / 10 + " gold per second";
   Game.elements.pickaxeButton.innerText = "pickaxe amount: " + (Game.values.pickaxe) + " costs:" + (Game.values.pickaxeCost * Game.values.pickaxe);  // the text for the second button
   Game.elements.pickaxeMultiplier.innerText = "pickaxe multiplier amount: " + (Game.values.pickaxeMultiplier - 1) + " costs:" + Math.round(Game.values.pickaxeMultiplierCost * Game.values.pickaxeMultiplier); // the text for the third button
@@ -63,22 +138,54 @@ Game.draw = function () {
   Game.elements.minerMultiplier.innerText = "Autominer multiplier amount: " + Game.values.autoMinerMultiplier + " costs: " + Math.round(Game.values.autoMinerMultiplierCost * Math.pow(1.3, (Game.values.autoMinerMultiplier - 1)));
   Game.elements.knobsonReset.innerText = Game.values.knobsonReset + " " + "knobs";
 
-  Game.elements.pickaxeKnob.innerText = "pickaxe power multiplier amount: " + Game.knobValues.knobPickaxe + "x costs: " + Math.floor(Math.pow(1.3, (Game.knobValues.knobPickaxe + 1)));
+  Game.elements.pickaxeKnob.innerText = "pickaxe power multiplier amount: " + Game.values.knobPickaxe + "x costs: " + Math.floor(Math.pow(1.3, (Game.values.knobPickaxe + 1)));
 
   Game.values.knobsonReset = Math.floor(Math.cbrt(Game.values.goldAmount / 1000000));
 
   if (Game.values.knobs < 1 && Game.elements.knobsonReset.disabled === true) {
-    console.log(Game.values.knobs);
     if (Game.values.goldAmount >= 1000000) {
-      Game.elements.knobsonReset.setAttribute("style", "color: black;" + "background: linear-gradient(to top, yellow, red);" + "border: solid black 2px;");
-      document.getElementById("btn-group4").style = "border: solid 15px #232323; background-color: rgba(136, 136, 136, 0.4);";
+      Game.values.saveInfo = true;
+      // Game.elements.knobsonReset.setAttribute("style", "color: black;" + "background: linear-gradient(to top, yellow, red);" + "border: solid black 2px; cursor: pointer;");
+      Game.elements.knobsonReset.style.color = "black";
+      Game.elements.knobsonReset.style.background = "linear-gradient(to top, yellow, red)";
+      Game.elements.knobsonReset.style.border = "solid black 2px";
+      Game.elements.knobsonReset.style.cursor = "pointer";
+      document.getElementById("btn-group4").style = "border: solid 15px #232323; background-color: rgba(136, 136, 136, 0.4); display: block;";
       Game.elements.knobsonReset.disabled = false;
     }
   } else {
-    if (Game.values.knobs >= Math.floor(Math.pow(1.3, (Game.knobValues.knobPickaxe + 1)))) {
-      document.getElementById("myButton22").style = "color: black; background-color: #c2c2c2; border: solid black 2px;";
+    const btn5 = document.getElementById("myButton5");
+    btn5.addEventListener("mouseenter", function (event) {
+      event.target.style.boxShadow = "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset";
+      event.target.style.transition = "box-shadow 0.2s ease-in-out, margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out";
+    }, false);
+    btn5.addEventListener("mouseleave", function (event) {
+      event.target.style.boxShadow = "";
+      event.target.style.transition = "";
+    }, false);
+
+    const btn22 = document.getElementById("myButton22");
+    btn22.addEventListener("mouseenter", function (event) {
+      event.target.style.boxShadow = "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset";
+      event.target.style.transition = "box-shadow 0.2s ease-in-out, margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out";
+    }, false);
+    btn22.addEventListener("mouseleave", function (event) {
+      event.target.style.boxShadow = "";
+      event.target.style.transition = "";
+    }, false);
+
+    if (Game.values.knobs >= Math.floor(Math.pow(1.3, (Game.values.knobPickaxe + 1)))) {
+      //document.getElementById("myButton22").style = "color: black; background-color: #c2c2c2; border: solid black 2px; cursor: pointer;";
+      Game.elements.pickaxeKnob.style.color = "black";
+      Game.elements.pickaxeKnob.style.background = "#c2c2c2";
+      Game.elements.pickaxeKnob.style.border = "solid black 2px";
+      Game.elements.pickaxeKnob.style.cursor = "pointer";
     } else {
-      document.getElementById("myButton22").style = "color: black; background-color: #6d6d6d; border: solid black 2px;";
+      //document.getElementById("myButton22").style = "color: black; background-color: #6d6d6d; border: solid black 2px;";
+      Game.elements.pickaxeKnob.style.color = "black";
+      Game.elements.pickaxeKnob.style.background = "#6d6d6d";
+      Game.elements.pickaxeKnob.style.border = "solid black 2px";
+      Game.elements.pickaxeKnob.style.cursor = "pointer";
     }
   }
 
@@ -103,6 +210,26 @@ Game.draw = function () {
     Game.elements.minerMultiplier.setAttribute("style", "background-color: #6d6d6d");
   }
 
+  if (Game.values.clickerTrophy === true) {
+    document.querySelectorAll("img").forEach(el => el.style.display = "flex");
+    document.querySelectorAll(".imgtext").forEach(el => el.style.display = "flex");
+    document.getElementById("clickerbar").style.display = "flex";
+  }
+  if (Game.values.idleerTrophy === true) {
+    document.querySelectorAll("img").forEach(el => el.style.display = "flex");
+    document.querySelectorAll(".imgtext").forEach(el => el.style.display = "flex");
+    document.getElementById("idlebar").style.display = "flex";
+  }
+  if (Game.values.knoberTrophy === true) {
+    document.querySelectorAll("img").forEach(el => el.style.display = "flex");
+    document.querySelectorAll(".imgtext").forEach(el => el.style.display = "flex");
+    document.getElementById("knobbar").style.display = "flex";
+  }
+
+  if (Game.values.saveInfo === true) {
+    document.getElementById("btn-group4").style = "border: solid 15px #232323; background-color: rgba(136, 136, 136, 0.4); display: block;";
+  }
+
   /*if(Game.values.goldAmount > 999999){
     Game.elements.gold = Game.elements.gold.toExponential(2);
     console.log(Game.values.goldAmount.toExponential(5));
@@ -111,7 +238,7 @@ Game.draw = function () {
 
 Game.update = function () {
   Game.values.goldAmount += Game.values.idleGold;
-  Game.values.idleGold = 0.01 * Game.values.pickaxe * Game.values.pickaxeMultiplier * Game.values.autoMiners * Math.pow(1.1, (Game.values.autoMinerMultiplier - 1)) * Game.values.knobMultiplier;
+  Game.values.idleGold = 0.01 * Game.values.pickaxe * Game.values.pickaxeMultiplier * Game.values.autoMiners * Math.pow(1.1, (Game.values.autoMinerMultiplier - 1)) * Game.values.knobMultiplier * Math.pow(1.1, (Game.values.idleerLevel - 1 - Game.values.idleMult));
 };
 
 Game.run = function (timestamp) {
@@ -138,6 +265,8 @@ window.requestAnimationFrame(Game.run);
 var colors = ["#232323", "#dbdbdb"];    // an array applied to a variable that allows the background to change between the two options
 var colors1 = ["white", "black"];   // an array applied to a variable that allows the text to change between the two options
 var colorIndex = 0;                 // used as an index to see where in the color or color1 array the program is
+
+
 //document.getElementsByClassName("button").style.borderColor = "white"; waarom werkt dit niet??
 
 
@@ -145,7 +274,6 @@ function saveFunction() {
   const saveState = Game.values;
   const saveStateString = JSON.stringify(saveState);
   localStorage.setItem("saveState", saveStateString);
-  //alert("save ")
 }
 
 window.setInterval(saveFunction, 15000);
@@ -155,6 +283,47 @@ function loadFunction() {
     const loadSaveStateString = localStorage.getItem("saveState");
     Game.values = JSON.parse(loadSaveStateString);
   }
+  if (Game.values.saveInfo === true) {
+    Game.elements.knobsonReset.style.color = "black";
+    Game.elements.knobsonReset.style.background = "linear-gradient(to top, yellow, red)";
+    Game.elements.knobsonReset.style.border = "solid black 2px";
+    Game.elements.knobsonReset.style.cursor = "pointer";
+    document.getElementById("btn-group4").style = "border: solid 15px #232323; background-color: rgba(136, 136, 136, 0.4); display: block;";
+    Game.elements.knobsonReset.disabled = false;
+    if (Game.values.knobs >= Math.floor(Math.pow(1.3, (Game.values.knobPickaxe + 1)))) {
+      //document.getElementById("myButton22").style = "color: black; background-color: #c2c2c2; border: solid black 2px; cursor: pointer;";
+      Game.elements.pickaxeKnob.style.color = "black";
+      Game.elements.pickaxeKnob.style.background = "#c2c2c2";
+      Game.elements.pickaxeKnob.style.border = "solid black 2px";
+      Game.elements.pickaxeKnob.style.cursor = "pointer";
+    } else {
+      //document.getElementById("myButton22").style = "color: black; background-color: #6d6d6d; border: solid black 2px;";
+      Game.elements.pickaxeKnob.style.color = "black";
+      Game.elements.pickaxeKnob.style.background = "#6d6d6d";
+      Game.elements.pickaxeKnob.style.border = "solid black 2px";
+      Game.elements.pickaxeKnob.style.cursor = "pointer";
+    }
+    const btn5 = document.getElementById("myButton5");
+    btn5.addEventListener("mouseenter", function (event) {
+      event.target.style.boxShadow = "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset";
+      event.target.style.transition = "box-shadow 0.2s ease-in-out, margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out";
+    }, false);
+    btn5.addEventListener("mouseleave", function (event) {
+      event.target.style.boxShadow = "";
+      event.target.style.transition = "";
+    }, false);
+
+    const btn22 = document.getElementById("myButton22");
+    btn22.addEventListener("mouseenter", function (event) {
+      event.target.style.boxShadow = "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset";
+      event.target.style.transition = "box-shadow 0.2s ease-in-out, margin-top 0.2s ease-in-out, opacity 0.2s ease-in-out";
+    }, false);
+    btn22.addEventListener("mouseleave", function (event) {
+      event.target.style.boxShadow = "";
+      event.target.style.transition = "";
+    }, false);
+  }
+
 }
 
 function resetFunction() {
@@ -164,7 +333,7 @@ function resetFunction() {
   Game.elements.pickaxeKnob.setAttribute("style", "color: transparent;" + "background: transparent;" + "border: transparent");
   document.getElementById("btn-group4").style.border = "border: transparent;" + "background: transparent;";
   Game.values = {
-    goldAmount: 0,
+    goldAmount: 999999999,
     pickaxe: 1,
     pickaxeMultiplier: 1,
     autoMinerMultiplier: 1,
@@ -177,11 +346,58 @@ function resetFunction() {
     autoMinersCost: 1000,
     autoMinerMultiplierCost: 10000,
     idleGold: 0,
+    knobPickaxe: 1,
+    saveInfo: false,
+    clickerTrophy: false,
+    clickerLevel: 2,
+    clickXp: 0,
+    clickMult: 1,
+    idleerTrophy: false,
+    idleerLevel: 2,
+    idleXp: 0,
+    idleMult: 1,
+    knoberTrophy: false,
+    knoberLevel: 2,
+    knobXp: 0,
+    knobMult: 1,
+    trophyToken1: true,
+    trophyToken2: true,
+    trophyToken3: true,
+    trophyToken: 0,
   }
 }
 
 function onGoldClick() { // this function gets called whenever the first button gets clicked
-  Game.values.goldAmount = Game.values.goldAmount + (Game.values.pickaxe * Game.knobValues.knobPickaxe) * Game.values.pickaxeMultiplier; // the formula that updates goldamount for click damage
+  Game.values.goldAmount = Game.values.goldAmount + (Game.values.pickaxe * Game.values.knobPickaxe) * Game.values.pickaxeMultiplier * Game.values.knobMultiplier * Math.pow(1.1, (Game.values.clickerLevel - 1 - Game.values.clickMult));
+  if (Game.values.clickerTrophy === true) {
+    Game.values.clickXp += 1;
+    root = document.documentElement;
+
+    function RSExp() {
+      this.equate = function (xp) {
+        return Math.floor(xp + 300 * Math.pow(2, xp / 7));
+      };
+      this.level_to_xp = function (level) {
+        var xp = 0;
+        for (var i = 1; i < level; i++)
+          xp += this.equate(i);
+        return Math.floor(xp / 4);
+      };
+      this.xp_to_level = function (xp) {
+        var level = 1;
+        while (this.level_to_xp(level) < xp)
+          level++;
+        return level;
+      };
+    }
+
+    var rs = new RSExp();
+    root.style.setProperty('--my-end-width1', ((500 / (rs.level_to_xp(Game.values.clickerLevel) - (rs.level_to_xp(Game.values.clickerLevel - 1)))) * Game.values.clickXp + 'px'));
+    if (Game.values.clickXp >= rs.level_to_xp(Game.values.clickerLevel) - (rs.level_to_xp(Game.values.clickerLevel - 1))) {
+      Game.values.clickXp = 0;
+      Game.values.clickerLevel += 1;
+    }
+  }
 }
 
 function onPickaxeClick() { // this function gets called whenever the second button gets clicked
@@ -209,16 +425,16 @@ function autoMiner() {
 }
 
 function autoMinerMultiplier() {
-  if (Game.values.goldAmount >= Game.values.autoMinerMultiplierCost * Math.pow(1.14, (Game.values.autoMinerMultiplier - 1))) {
-    Game.values.goldAmount = Game.values.goldAmount - Game.values.autoMinerMultiplierCost * Math.pow(1.14, (Game.values.autoMinerMultiplier - 1));
+  if (Game.values.goldAmount >= Game.values.autoMinerMultiplierCost * Math.pow(1.3, (Game.values.autoMinerMultiplier - 1))) {
+    Game.values.goldAmount = Game.values.goldAmount - Game.values.autoMinerMultiplierCost * Math.pow(1.3, (Game.values.autoMinerMultiplier - 1));
     Game.values.autoMinerMultiplier += 1;
   }
 }
 
 function knobPickaxeFunction() {
-  if (Game.values.knobs >= Math.floor(Math.pow(1.3, (Game.knobValues.knobPickaxe + 1)))) {
-    Game.values.knobs = Game.values.knobs - Math.floor(Math.pow(1.3, (Game.knobValues.knobPickaxe + 1)));
-    Game.knobValues.knobPickaxe += 1;
+  if (Game.values.knobs >= Math.floor(Math.pow(1.3, (Game.values.knobPickaxe + 1)))) {
+    Game.values.knobs = Game.values.knobs - Math.floor(Math.pow(1.3, (Game.values.knobPickaxe + 1)));
+    Game.values.knobPickaxe += 1;
   }
 }
 
@@ -237,6 +453,28 @@ function prestigeFunction() { // function that gets called when the first presti
   Game.values.autoMinersCost = 1000;
   Game.values.autoMinerMultiplierCost = 10000;
   Game.values.idleGold = 0;
+}
+
+function clickTrophy() {
+  Game.values.clickerTrophy = true;
+  //document.getElementById("myButton26").style.display = "none";
+  Game.values.trophyToken -= 1;
+  document.querySelectorAll(".trophybutton1").forEach(el => el.style.display = "none");
+  Game.values.clickMult = 0;
+}
+
+function idleTrophy() {
+  Game.values.idleerTrophy = true;
+  document.querySelectorAll(".trophybutton2").forEach(el => el.style.display = "none");
+  Game.values.trophyToken -= 1;
+  Game.values.idleMult = 0;
+}
+
+function knobTrophy() {
+  Game.values.knoberTrophy = true;
+  document.querySelectorAll(".trophybutton3").forEach(el => el.style.display = "none");
+  Game.values.trophyToken -= 1;
+  Game.values.knobMult = 0;
 }
 
 function darkFunction() { // this function gets called whenever the dark/light theme button gets clicked
@@ -264,6 +502,15 @@ function darkFunction() { // this function gets called whenever the dark/light t
     }
   } else {
     for (const s of document.getElementsByClassName("btn-group3")) {//waarom werkt dit niet voor "button button2" class?
+      s.style.border = "15px solid #232323";
+    }
+  }
+  if (colorIndex === 0) {
+    for (const s of document.getElementsByClassName("btn-group4")) {//waarom werkt dit niet voor "button button2" class?
+      s.style.border = "15px solid white";
+    }
+  } else {
+    for (const s of document.getElementsByClassName("btn-group4")) {//waarom werkt dit niet voor "button button2" class?
       s.style.border = "15px solid #232323";
     }
   }
