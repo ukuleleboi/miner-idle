@@ -8,6 +8,7 @@ const Game = {
     knobs: 0,
     knobsonReset: 0,
     knobMultiplier: 1,
+    knobTrophyMultiplier: 1,
     pickaxeCost: 10,
     pickaxeMultiplierCost: 100,
     autoMinersCost: 1000,
@@ -98,28 +99,27 @@ Game.draw = function () {
     document.getElementById('myButton29').style.display = "none";
   }
 
+  function RSExp() {
+    this.equate = function (xp) {
+      return Math.floor(xp + 300 * Math.pow(2, xp / 7));
+    };
+    this.level_to_xp = function (level) {
+      var xp = 0;
+      for (var i = 1; i < level; i++)
+        xp += this.equate(i);
+      return Math.floor(xp / 4);
+    };
+    this.xp_to_level = function (xp) {
+      var level = 1;
+      while (this.level_to_xp(level) < xp)
+        level++;
+      return level;
+    };
+  }
+
   if (Game.values.idleerTrophy === true) {
     Game.values.idleXp += 0.1;
     root = document.documentElement;
-
-    function RSExp() {
-      this.equate = function (xp) {
-        return Math.floor(xp + 300 * Math.pow(2, xp / 7));
-      };
-      this.level_to_xp = function (level) {
-        var xp = 0;
-        for (var i = 1; i < level; i++)
-          xp += this.equate(i);
-        return Math.floor(xp / 4);
-      };
-      this.xp_to_level = function (xp) {
-        var level = 1;
-        while (this.level_to_xp(level) < xp)
-          level++;
-        return level;
-      };
-    }
-
     var rs = new RSExp();
     root.style.setProperty('--my-end-width2', ((500 / (rs.level_to_xp(Game.values.idleerLevel) - (rs.level_to_xp(Game.values.idleerLevel - 1)))) * Game.values.idleXp + 'px'));
     if (Game.values.idleXp >= rs.level_to_xp(Game.values.idleerLevel) - (rs.level_to_xp(Game.values.idleerLevel - 1))) {
@@ -127,15 +127,26 @@ Game.draw = function () {
       Game.values.idleerLevel += 1;
     }
   }
+  if (Game.values.knoberTrophy === true) {
+    Game.values.knobXp += (0.01 * (Game.values.knobMultiplier - 1));
+    root = document.documentElement;
+    var rs = new RSExp();
+    root.style.setProperty('--my-end-width3', ((500 / (rs.level_to_xp(Game.values.knoberLevel) - (rs.level_to_xp(Game.values.knoberLevel - 1)))) * Game.values.knobXp + 'px'));
+    if (Game.values.knobXp >= rs.level_to_xp(Game.values.knoberLevel) - (rs.level_to_xp(Game.values.knoberLevel - 1))) {
+      Game.values.knobXp = 0;
+      Game.values.knoberLevel += 1;
+    }
+    Game.values.knobTrophyMultiplier = Math.pow(1.1, (Game.values.knoberLevel - 1));
+  }
 
   Game.elements.gold.innerText = Math.floor(Game.values.goldAmount)/*.toExponential(2)*/ + " gold";  //writes the goldamount upon loading the site(files)
   Game.elements.knobs.innerText = Game.values.knobs + " knobs";
-  Game.elements.click.innerText = Math.round((Game.values.pickaxe * Game.values.knobPickaxe) * Game.values.pickaxeMultiplier * Game.values.knobMultiplier * Math.pow(1.1, (Game.values.clickerLevel - 1 - Game.values.clickMult))) + " " + "gold per click";  //writes the gold the player gains per click whenever it changes
+  Game.elements.click.innerText = Math.round((Game.values.pickaxe * Game.values.knobPickaxe) * Game.values.pickaxeMultiplier * Game.values.knobMultiplier * Game.values.knobTrophyMultiplier * Math.pow(1.1, (Game.values.clickerLevel - 1 - Game.values.clickMult))) + " " + "gold per click";  //writes the gold the player gains per click whenever it changes
   Game.elements.gps.innerText = Math.round((Game.values.idleGold + Number.EPSILON) * 100) / 10 + " gold per second";
   Game.elements.pickaxeButton.innerText = "pickaxe amount: " + (Game.values.pickaxe) + " costs:" + (Game.values.pickaxeCost * Game.values.pickaxe);  // the text for the second button
   Game.elements.pickaxeMultiplier.innerText = "pickaxe multiplier amount: " + (Game.values.pickaxeMultiplier - 1) + " costs:" + Math.round(Game.values.pickaxeMultiplierCost * Game.values.pickaxeMultiplier); // the text for the third button
   Game.elements.miners.innerText = "Autominers amount: " + Game.values.autoMiners + " costs:" + Game.values.autoMinersCost * Math.pow(10, Game.values.autoMiners);
-  Game.elements.minerMultiplier.innerText = "Autominer multiplier amount: " + Game.values.autoMinerMultiplier + " costs: " + Math.round(Game.values.autoMinerMultiplierCost * Math.pow(1.3, (Game.values.autoMinerMultiplier - 1)));
+  Game.elements.minerMultiplier.innerText = "Autominer multiplier amount: " + Game.values.autoMinerMultiplier + " costs: " + Math.round(Game.values.autoMinerMultiplierCost * Math.pow(1.4, (Game.values.autoMinerMultiplier - 1)));
   Game.elements.knobsonReset.innerText = Game.values.knobsonReset + " " + "knobs";
 
   Game.elements.pickaxeKnob.innerText = "pickaxe power multiplier amount: " + Game.values.knobPickaxe + "x costs: " + Math.floor(Math.pow(1.3, (Game.values.knobPickaxe + 1)));
@@ -204,7 +215,7 @@ Game.draw = function () {
   } else {
     Game.elements.miners.setAttribute("style", "background-color: #6d6d6d");
   }
-  if (Game.values.goldAmount >= Math.round(Game.values.autoMinerMultiplierCost * Math.pow(1.3, (Game.values.autoMinerMultiplier - 1)))) {
+  if (Game.values.goldAmount >= Math.round(Game.values.autoMinerMultiplierCost * Math.pow(1.4, (Game.values.autoMinerMultiplier - 1)))) {
     Game.elements.minerMultiplier.setAttribute("style", "background-color: #c2c2c2");
   } else {
     Game.elements.minerMultiplier.setAttribute("style", "background-color: #6d6d6d");
@@ -238,7 +249,7 @@ Game.draw = function () {
 
 Game.update = function () {
   Game.values.goldAmount += Game.values.idleGold;
-  Game.values.idleGold = 0.01 * Game.values.pickaxe * Game.values.pickaxeMultiplier * Game.values.autoMiners * Math.pow(1.1, (Game.values.autoMinerMultiplier - 1)) * Game.values.knobMultiplier * Math.pow(1.1, (Game.values.idleerLevel - 1 - Game.values.idleMult));
+  Game.values.idleGold = 0.01 * Game.values.pickaxe * Game.values.pickaxeMultiplier * Game.values.autoMiners * Math.pow(1.1, (Game.values.autoMinerMultiplier - 1)) * Game.values.knobMultiplier * Game.values.knobTrophyMultiplier * Math.pow(1.1, (Game.values.idleerLevel - 1 - Game.values.idleMult));
 };
 
 Game.run = function (timestamp) {
@@ -341,6 +352,7 @@ function resetFunction() {
     knobs: 0,
     knobsonReset: 0,
     knobMultiplier: 1,
+    knobTrophyMultiplier: 1,
     pickaxeCost: 10,
     pickaxeMultiplierCost: 100,
     autoMinersCost: 1000,
@@ -368,7 +380,7 @@ function resetFunction() {
 }
 
 function onGoldClick() { // this function gets called whenever the first button gets clicked
-  Game.values.goldAmount = Game.values.goldAmount + (Game.values.pickaxe * Game.values.knobPickaxe) * Game.values.pickaxeMultiplier * Game.values.knobMultiplier * Math.pow(1.1, (Game.values.clickerLevel - 1 - Game.values.clickMult));
+  Game.values.goldAmount = Game.values.goldAmount + (Game.values.pickaxe * Game.values.knobPickaxe) * Game.values.pickaxeMultiplier * Game.values.knobMultiplier * Game.values.knobTrophyMultiplier * Math.pow(1.1, (Game.values.clickerLevel - 1 - Game.values.clickMult));
   if (Game.values.clickerTrophy === true) {
     Game.values.clickXp += 1;
     root = document.documentElement;
@@ -425,8 +437,8 @@ function autoMiner() {
 }
 
 function autoMinerMultiplier() {
-  if (Game.values.goldAmount >= Game.values.autoMinerMultiplierCost * Math.pow(1.3, (Game.values.autoMinerMultiplier - 1))) {
-    Game.values.goldAmount = Game.values.goldAmount - Game.values.autoMinerMultiplierCost * Math.pow(1.3, (Game.values.autoMinerMultiplier - 1));
+  if (Game.values.goldAmount >= Game.values.autoMinerMultiplierCost * Math.pow(1.4, (Game.values.autoMinerMultiplier - 1))) {
+    Game.values.goldAmount = Game.values.goldAmount - Game.values.autoMinerMultiplierCost * Math.pow(1.4, (Game.values.autoMinerMultiplier - 1));
     Game.values.autoMinerMultiplier += 1;
   }
 }
