@@ -163,7 +163,7 @@ Game.draw = function () {
   Game.values.knobsonReset = Math.floor(Math.cbrt(Game.values.goldAmount / 100000)) ;
 
   if (Game.values.knobs < 1 && Game.elements.knobsonReset.disabled === true) {
-    if (Game.values.goldAmount >= 1000000) {
+    if (Game.values.goldAmount >= 100000) {
       Game.values.saveInfo = true;
       // Game.elements.knobsonReset.setAttribute("style", "color: black;" + "background: linear-gradient(to top, yellow, red);" + "border: solid black 2px; cursor: pointer;");
       Game.elements.knobsonReset.style.color = "black";
