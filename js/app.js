@@ -459,7 +459,7 @@ Game.draw = function () {
   Game.elements.gold.innerText = Math.floor(Game.values.goldAmount)/*.toExponential(2)*/ + " gold";  //writes the goldamount upon loading the site(files)
   Game.elements.knobs.innerText = (Math.round(Game.values.knobs * 100) / 100) + " knobs";
   Game.elements.bars.innerText = (Math.round(Game.values.goldBars * 100) / 100) + " gold bars";
-  Game.elements.click.innerText = Math.round(((Game.values.pickaxe + Game.values.glove4pick) * Game.values.knobPickaxe) * (Game.values.pickaxeMultiplier + Game.values.glove4pickmult) * Game.values.knobMultiplier * Game.values.knobTrophyMultiplier * Math.pow(1.1, (Game.values.clickerLevel - 1 - Game.values.clickMult)) * Game.values.glove1Multi * Game.values.glove3Multi) + " " + "gold per click";  //writes the gold the player gains per click whenever it changes
+  Game.elements.click.innerText = (Math.round(((Game.values.pickaxe + Game.values.glove4pick) * Game.values.knobPickaxe) * (Game.values.pickaxeMultiplier + Game.values.glove4pickmult) * Game.values.knobMultiplier * Game.values.knobTrophyMultiplier * Math.pow(1.1, (Game.values.clickerLevel - 1 - Game.values.clickMult)) * Game.values.glove1Multi * Game.values.glove3Multi * 100) / 100) + " " + "gold per click";  //writes the gold the player gains per click whenever it changes
   Game.elements.gps.innerText = Math.round((Game.values.idleGold + Number.EPSILON) * 100) / 10 + " gold per second";
   Game.elements.pickaxeButton.innerText = "pickaxes: " + (Game.values.pickaxe + Game.values.glove4pick) + " cost:" + (Game.values.pickaxeCost * Game.values.pickaxe) + "\n" + '"More pickaxes will mine +1 base gold.. how many hands do I have?"';  // the text for the second button
   Game.elements.pickaxeMultiplier.innerText = "pickaxe multi: " + (Game.values.pickaxeMultiplier + Game.values.glove4pickmult) + "x cost:" + Math.round(Game.values.pickaxeMultiplierCost * Game.values.pickaxeMultiplier) + "\n" + '"Multiplies pickaxe strength by +1x.. so do I or the pickaxes gain strength?"'; // the text for the third button
@@ -470,8 +470,11 @@ Game.draw = function () {
   Game.elements.clickbar.innerText = "trade 1 trophy-level for 1 golden bar" + "\n" + "minimum trophy level: " + (Game.values.minclicklvl + 2);
   Game.elements.idlebar.innerText = "trade 1 trophy-level for 1 golden bar" + "\n" + "minimum trophy level: " + (Game.values.minidlelvl + 2);
   Game.elements.knobbar.innerText = "trade 1 trophy-level for 1 golden bar" + "\n" + "minimum trophy level: " + (Game.values.minknoblvl + 2);
-  Game.elements.goldknob.innerText = "keep: " + Game.values.goldbarLevel + "%" + " costs: " + (Game.values.goldbarLevel + 1) + " gold bars" + "\n" + '"Trade bars in to keep a bit of alltime knobs after buying gloves"';
-
+  if(Game.values.gloveArray[5] === true) {
+    Game.elements.goldknob.innerText = "keep: " + Game.values.goldbarLevel + "%" + " costs: " + (Game.values.goldbarLevel + 1) + " gold bar(s)" + "\n" + '"Trade bars in to keep a bit of alltime knobs after buying gloves"';
+  } else {
+    Game.elements.goldknob.innerText = "you do not possess THE knowledge yet"
+  }
   Game.elements.pickaxeKnob.innerText = "pickaxe power multi: " + Game.values.knobPickaxe + "x cost: " + Math.floor(Math.pow(1.3, (Game.values.knobPickaxe + 1)));
   Game.elements.xpMult.innerText = "trophy xp multi: " + Game.values.xpMult + "x cost: " + Math.floor(Math.pow(10, Game.values.xpMult) * 10);
   if ((Game.values.knobsonReset * Game.values.glove5mult) >= 5000) {
@@ -709,7 +712,7 @@ function fn4(e) {
     tooltip4[i].style.left = e.pageX + 'px';
     tooltip4[i].style.top = e.pageY + 'px';
     let joe = document.getElementById("knobmultitooltip");
-    joe.innerHTML = "alltime knobs: " + Math.round((Game.values.knobMultiplier - 1) * 10) + "<br>" + "multiplier: " + Math.round(100 * (Game.values.knobMultiplier - 1) * Game.values.knobTrophyMultiplier) / 100 + "x" + "<br>" + "\"multiplies gold per second/click\"" + "<br>" + '\"Knobs for your pickaxe handles.. they swing much easier somehow.\"';
+    joe.innerHTML = "alltime knobs: " + Math.round((Game.values.knobMultiplier - 1) * 10) + "<br>" + "multiplier: " + Math.round(100 * (Game.values.knobMultiplier) * Game.values.knobTrophyMultiplier) / 100 + "x" + "<br>" + "\"multiplies gold per second/click\"" + "<br>" + '\"Knobs for your pickaxe handles.. they swing much easier somehow.\"';
   }
 }
 
