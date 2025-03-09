@@ -75,6 +75,7 @@ const Game = {
 
 
   elements: {
+    hints: null,
     gold: null,
     knobs: null,
     knobsonReset: null,
@@ -99,6 +100,7 @@ const Game = {
 };
 
 Game.initialize = function () {
+  Game.elements.hints = document.getElementById("hints");
   Game.elements.gold = document.getElementById("goldamount");
   Game.elements.knobs = document.getElementById("knobs");
   Game.elements.bars = document.getElementById("barAmount");
@@ -454,6 +456,16 @@ Game.draw = function () {
       Game.values.knoberLevel += 1;
     }
     Game.values.knobTrophyMultiplier = Math.pow(1.1, (Game.values.knoberLevel - 1));
+  }
+
+  if(Game.values.goldAmount < 100000){
+    Game.elements.hints.innerText = "Click buttons to gain gold and pickaxes, try to gain 100000 gold for now."
+  } else if(Game.values.knobMultiplier < 1.5){
+    Game.elements.hints.innerText = "5 alltime knobs should be a decent start.."
+  } else if(Game.values.knobMultiplier < 5000){
+    Game.elements.hints.innerText = "Keep on minin', keep on minin'."
+  } else{
+    Game.elements.hints.innerText = "get as many gloves as you can!!!";
   }
 
   Game.elements.gold.innerText = Math.floor(Game.values.goldAmount)/*.toExponential(2)*/ + " gold";  //writes the goldamount upon loading the site(files)
