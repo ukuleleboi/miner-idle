@@ -1,5 +1,5 @@
 const InitialValues = {
-  goldAmount: 99999999999999999,
+  goldAmount: 0,
   pickaxe: 1,
   pickaxeMultiplier: 1,
   autoMinerMultiplier: 1,
