@@ -66,6 +66,9 @@ const InitialValues = {
   minclicklvl: 0,
   minidlelvl: 0,
   minknoblvl: 0,
+  hints1: true,
+  hints2: true,
+  hints3: true,
 };
 
 const Game = {
@@ -458,12 +461,15 @@ Game.draw = function () {
     Game.values.knobTrophyMultiplier = Math.pow(1.1, (Game.values.knoberLevel - 1));
   }
 
-  if(Game.values.goldAmount < 100000){
+  if(Game.values.goldAmount < 100000 && Game.values.hints1 === true){
     Game.elements.hints.innerText = "Click buttons to gain gold and pickaxes, try to gain 100000 gold for now."
-  } else if(Game.values.knobMultiplier < 1.5){
+    Game.values.hints1 = false;
+  } else if(Game.values.knobMultiplier < 1.5 && Game.values.hints2 === true){
     Game.elements.hints.innerText = "5 alltime knobs should be a decent start.."
-  } else if(Game.values.knobMultiplier < 5000){
+    Game.values.hints2 = false;
+  } else if(Game.values.knobMultiplier < 5000 && Game.values.hints3 === true){
     Game.elements.hints.innerText = "Keep on minin', keep on minin'."
+    Game.values.hints3 = false;
   } else{
     Game.elements.hints.innerText = "get as many gloves as you can!!!";
   }
