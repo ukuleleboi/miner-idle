@@ -69,7 +69,7 @@ const InitialValues = {
   hints1: true,
   hints2: true,
   hints3: true,
-  bloop: 0,
+  mute: false,
 };
 
 const Game = {
@@ -512,6 +512,13 @@ Game.draw = function () {
     Game.elements.checkGloves.style.height = "45px";
     Game.elements.checkGloves.style.border = "2px solid black";
     Game.elements.checkGloves.disabled = false;
+  }
+
+  let dumy = document.getElementById("myButton21");
+  if (Game.values.mute === false) {
+    dumy.innerText = "mute sound";
+  } else {
+    dumy.innerText = "unmute sound";
   }
 
   Game.values.knobsonReset = Math.floor(Math.cbrt(Game.values.goldAmount / 100000)) * Game.values.glove5mult;
@@ -1320,10 +1327,10 @@ function darkFunction() { // this function gets called whenever the dark/light t
   colorIndex++;
 }
 
-let mute = false;
+//let mute = false;
 
 function playClick() {
-  if (mute === false) {
+  if (Game.values.mute === false) {
     let clickSound = new Audio("js/click.wav");
     clickSound.volume = 0.2;
     clickSound.play();
@@ -1331,9 +1338,9 @@ function playClick() {
 }
 
 function muteFunction() {
-  mute = mute === false;
+  Game.values.mute = Game.values.mute === false;
   let dumy = document.getElementById("myButton21");
-  if (mute === false) {
+  if (Game.values.mute === false) {
     dumy.innerText = "mute sound";
   } else {
     dumy.innerText = "unmute sound";
