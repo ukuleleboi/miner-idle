@@ -502,6 +502,7 @@ Game.draw = function () {
     Game.elements.gloves.innerText = "reach 5000 knobs in one reset to discover!";
   } else {
     Game.elements.gloves.innerText = "buy a specialized glove, costs:" + Math.floor(5000 * Math.pow(1.05, Game.values.gloveCount)) + "\n" + '"So powerful it resets alltime knobs!?"';
+    Game.elements.checkGloves.style.display = "flex";
     Game.elements.checkGloves.style.color = "white";
     Game.elements.checkGloves.style.background = "linear-gradient(to bottom, grey, black)";
     Game.elements.checkGloves.style.float = "right";
@@ -1206,10 +1207,12 @@ function glove9F() {// +1 glove roll
 }
 
 function checkGloveFunction() {
-  document.getElementById('glove-choice-background').style.display = 'block';
-  document.getElementById('myButton35').onclick = function () {
-    document.getElementById('glove-choice-background').style.display = 'none';
-    playClick();
+  if (Game.values.gloveLock === true) {
+    document.getElementById('glove-choice-background').style.display = 'block';
+    document.getElementById('myButton35').onclick = function () {
+      document.getElementById('glove-choice-background').style.display = 'none';
+      playClick();
+    }
   }
 }
 
