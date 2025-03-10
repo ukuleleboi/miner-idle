@@ -397,7 +397,7 @@ Game.draw = function () {
     Game.values.trophyToken += 1;
     Game.values.trophyToken1 = false;
   }
-  if (Game.values.knobMultiplier >= 6.0 && Game.values.trophyToken2 === true) {
+  if (Game.values.knobMultiplier >= 4.0 && Game.values.trophyToken2 === true) {
     Game.values.trophyToken += 1;
     Game.values.trophyToken2 = false;
   }
@@ -1286,7 +1286,7 @@ function darkFunction() { // this function gets called whenever the dark/light t
     colorIndex = 0;
   }
   col.style.color = colors1[colorIndex];
-  if (colorIndex === 0) {
+  /*if (colorIndex === 0) {
     for (const s of document.getElementsByClassName("button")) {//waarom werkt dit niet voor "button button2" class?
       s.style.border = "2px solid white";
     }
@@ -1312,7 +1312,7 @@ function darkFunction() { // this function gets called whenever the dark/light t
     for (const s of document.getElementsByClassName("btn-group4")) {//waarom werkt dit niet voor "button button2" class?
       s.style.border = "15px solid #232323";
     }
-  }
+  }*/
   colorIndex++;
 }
 
