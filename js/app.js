@@ -261,7 +261,7 @@ Game.draw = function () {
     document.getElementById("myButton46").style.display = "flex";
     document.getElementById("myButton47").style.display = "flex";
     Game.elements.bars.style.display = "flex";
-    Game.values.glove6mult = Math.floor(Math.cbrt(Game.values.glove6)) * 2;
+    Game.values.glove6mult = Math.floor(Math.cbrt(Game.values.glove6));
   } else {
     document.getElementById("myButton41").style.boxShadow = "none";
     document.getElementById("myButton45").style.display = "none";
@@ -486,9 +486,9 @@ Game.draw = function () {
   Game.elements.minerMultiplier.innerText = "Autominer multi: " + (Math.round(Game.values.autoMinerMultiplier + Game.values.glove4automult) / 10 + 1) + "x cost: " + Math.round(Game.values.autoMinerMultiplierCost * Math.pow(1.4, (Game.values.autoMinerMultiplier - 1))) + "\n" + '"Multiplies autominer power by +0.1x.. magic multiplying magic."';
   Game.elements.knobsonReset.innerText = Game.values.knobsonReset + " " + "knobs";
 
-  Game.elements.clickbar.innerText = "trade 1 trophy-level for 1 golden bar" + "\n" + "minimum trophy level: " + (Game.values.minclicklvl + 2);
-  Game.elements.idlebar.innerText = "trade 1 trophy-level for 1 golden bar" + "\n" + "minimum trophy level: " + (Game.values.minidlelvl + 2);
-  Game.elements.knobbar.innerText = "trade 1 trophy-level for 1 golden bar" + "\n" + "minimum trophy level: " + (Game.values.minknoblvl + 2);
+  Game.elements.clickbar.innerText = "trade 1 trophy-level for " + Game.values.glove6mult + " golden bar(s)" + "\n" + "minimum trophy level: " + (Game.values.minclicklvl + 2);
+  Game.elements.idlebar.innerText = "trade 1 trophy-level for " + Game.values.glove6mult + " golden bar(s)" + "\n" + "minimum trophy level: " + (Game.values.minidlelvl + 2);
+  Game.elements.knobbar.innerText = "trade 1 trophy-level for " + Game.values.glove6mult + " golden bar(s)" + "\n" + "minimum trophy level: " + (Game.values.minknoblvl + 2);
   if(Game.values.gloveArray[5] === true) {
     Game.elements.goldknob.innerText = "keep: " + Game.values.goldbarLevel + "%" + " costs: " + (Game.values.goldbarLevel + 1) + " gold bar(s)" + "\n" + '"Trade bars in to keep a bit of alltime knobs after buying gloves"';
   } else {
@@ -1010,7 +1010,7 @@ function xpFunction() {
 function gloveKnobFunction() {
   if (Game.values.goldBars >= (Game.values.goldbarLevel + 1)) {
     Game.values.goldbarLevel += 1;
-    Game.values.goldBars -= (Game.values.goldbarLevel + 1);
+    Game.values.goldBars -= Game.values.goldbarLevel;
   }
 }
 
@@ -1252,7 +1252,7 @@ function clickTrophy() {
 function clickBar() {
   if (Game.values.clickerLevel > (Game.values.minclicklvl + 2)) {
     Game.values.clickerLevel -= 1;
-    Game.values.goldBars += 1;
+    Game.values.goldBars += Game.values.glove6mult;
     Game.values.minclicklvl += 1;
   }
 }
@@ -1267,7 +1267,7 @@ function idleTrophy() {
 function idleBar() {
   if (Game.values.idleerLevel > (Game.values.minidlelvl + 2)) {
     Game.values.idleerLevel -= 1;
-    Game.values.goldBars += 1;
+    Game.values.goldBars += Game.values.glove6mult;
     Game.values.minidlelvl += 1;
   }
 }
@@ -1282,7 +1282,7 @@ function knobTrophy() {
 function knobBar() {
   if (Game.values.knoberLevel > (Game.values.minknoblvl + 2)) {
     Game.values.knoberLevel -= 1;
-    Game.values.goldBars += 1;
+    Game.values.goldBars += Game.values.glove6mult;
     Game.values.minknoblvl += 1;
   }
 }
