@@ -69,6 +69,7 @@ const InitialValues = {
   hints1: true,
   hints2: true,
   hints3: true,
+  bloop: 0,
 };
 
 const Game = {
