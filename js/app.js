@@ -70,6 +70,7 @@ const InitialValues = {
   hints2: true,
   hints3: true,
   mute: false,
+  confirmBool: true,
 };
 
 const Game = {
@@ -125,6 +126,12 @@ Game.initialize = function () {
   Game.elements.idlebar = document.getElementById("myButton46");
   Game.elements.knobbar = document.getElementById("myButton47");
   Game.elements.goldknob = document.getElementById("myButton25");
+
+  if(Game.values.confirmBool === true) {
+    document.getElementById("myButton49").innerText = "turn RESET confirmation off";
+  } else {
+    document.getElementById("myButton49").innerText = "turn RESET confirmation on";
+  }
 
   //document.getElementById("myButton11").disabled = true;
   loadFunction();
@@ -1225,20 +1232,46 @@ function checkGloveFunction() {
 }
 
 function prestigeFunction() { // function that gets called when the first prestige layers button gets clicked
-  if (!confirm("Reset your progress for shiny knobs?")) return;
-  Game.values.knobs += Game.values.knobsonReset;
-  Game.values.knobMultiplier += (Game.values.knobsonReset * 0.1);
-  Game.values.goldAmount = 0;
-  Game.values.pickaxe = 1;
-  Game.values.pickaxeMultiplier = 1;
-  Game.values.autoMinerMultiplier = 1;
-  Game.values.autoMiners = 0;
-  Game.values.knobsonReset = 0;
-  Game.values.pickaxeCost = 10;
-  Game.values.pickaxeMultiplierCost = 100;
-  Game.values.autoMinersCost = 1000;
-  Game.values.autoMinerMultiplierCost = 10000;
-  Game.values.idleGold = 0;
+  if (Game.values.confirmBool === true) {
+    if (!confirm("Reset your progress for shiny knobs?")) return;
+    Game.values.knobs += Game.values.knobsonReset;
+    Game.values.knobMultiplier += (Game.values.knobsonReset * 0.1);
+    Game.values.goldAmount = 0;
+    Game.values.pickaxe = 1;
+    Game.values.pickaxeMultiplier = 1;
+    Game.values.autoMinerMultiplier = 1;
+    Game.values.autoMiners = 0;
+    Game.values.knobsonReset = 0;
+    Game.values.pickaxeCost = 10;
+    Game.values.pickaxeMultiplierCost = 100;
+    Game.values.autoMinersCost = 1000;
+    Game.values.autoMinerMultiplierCost = 10000;
+    Game.values.idleGold = 0;
+  } else {
+    Game.values.knobs += Game.values.knobsonReset;
+    Game.values.knobMultiplier += (Game.values.knobsonReset * 0.1);
+    Game.values.goldAmount = 0;
+    Game.values.pickaxe = 1;
+    Game.values.pickaxeMultiplier = 1;
+    Game.values.autoMinerMultiplier = 1;
+    Game.values.autoMiners = 0;
+    Game.values.knobsonReset = 0;
+    Game.values.pickaxeCost = 10;
+    Game.values.pickaxeMultiplierCost = 100;
+    Game.values.autoMinersCost = 1000;
+    Game.values.autoMinerMultiplierCost = 10000;
+    Game.values.idleGold = 0;
+  }
+}
+
+function confirmFunction() {
+  if(Game.values.confirmBool === true) {
+    Game.values.confirmBool = false;
+    document.getElementById("myButton49").innerText = "turn RESET confirmation on";
+  } else {
+    Game.values.confirmBool = true;
+    document.getElementById("myButton49").innerText = "turn RESET confirmation off";
+  }
 }
 
 function clickTrophy() {
