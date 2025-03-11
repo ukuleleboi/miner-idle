@@ -127,11 +127,7 @@ Game.initialize = function () {
   Game.elements.knobbar = document.getElementById("myButton47");
   Game.elements.goldknob = document.getElementById("myButton25");
 
-  if(Game.values.confirmBool === true) {
-    document.getElementById("myButton49").innerText = "turn RESET confirmation off";
-  } else {
-    document.getElementById("myButton49").innerText = "turn RESET confirmation on";
-  }
+
 
   //document.getElementById("myButton11").disabled = true;
   loadFunction();
@@ -147,6 +143,11 @@ Game.initialize = function () {
 Game.draw = function () {
   if ((Game.values.pickaxe) >= 1000) {
     Game.values.pickaxeCost = Infinity;
+  }
+  if(Game.values.confirmBool === true) {
+    document.getElementById("myButton49").innerText = "turn RESET confirmation off";
+  } else {
+    document.getElementById("myButton49").innerText = "turn RESET confirmation on";
   }
 
   //document.getElementById("myButton36").style.boxShadow = "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset";
